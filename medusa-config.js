@@ -28,8 +28,7 @@ const ADMIN_CORS =
 // CORS to avoid issues when consuming Medusa from a client
 const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 
-const DATABASE_URL =
-  process.env.DATABASE_URL || "postgres://localhost/medusa-starter-default";
+const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432";
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
@@ -37,14 +36,37 @@ const plugins = [
   `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
   {
+    resolve: `medusa-plugin-nodemailer`,
+    options: {
+      fromEmail: "vatsik@i.ua",
+      sendmail: true,
+      transport: {
+        host: "smtp.office365.com",
+        port: 587,
+        secureConnection: false,
+        auth: {
+          user: "vatsik@i.ua",
+          pass: "qwerty12345",
+        },
+        tls: {
+          ciphers: "SSLv3",
+        },
+        requireTLS: true,
+      },
+      templateMap: {
+        "order.placed": "orderplaced",
+      },
+    },
+  },
+  {
     resolve: `medusa-fulfillment-novaposhta`,
     options: {
-      api_key: "",
-      senderRef: "",
-      senderCityRef: "",
-      senderAddressRef: "",
-      contactSender: "",
-      senderPhone: "",
+      apiKey: "ae1af1384196007e7b8f24f3739e5db1",
+      senderRef: "041239372",
+      senderCityRef: "Bolhrad",
+      senderAddressRef: "Address",
+      contactSender: "Bolagro service client",
+      senderPhone: "+380964363901",
     },
   },
   {
@@ -66,18 +88,18 @@ const plugins = [
 ];
 
 const modules = {
-  /*eventBus: {
+  eventBus: {
     resolve: "@medusajs/event-bus-redis",
     options: {
-      redisUrl: REDIS_URL
-    }
+      redisUrl: REDIS_URL,
+    },
   },
   cacheService: {
     resolve: "@medusajs/cache-redis",
     options: {
-      redisUrl: REDIS_URL
-    }
-  },*/
+      redisUrl: REDIS_URL,
+    },
+  },
 };
 
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
@@ -88,7 +110,7 @@ const projectConfig = {
   database_url: DATABASE_URL,
   admin_cors: ADMIN_CORS,
   // Uncomment the following lines to enable REDIS
-  // redis_url: REDIS_URL
+  redis_url: REDIS_URL,
 };
 
 /** @type {import('@medusajs/medusa').ConfigModule} */

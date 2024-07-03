@@ -31,33 +31,9 @@ const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432";
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
-
 const plugins = [
   `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
-  {
-    resolve: `medusa-plugin-nodemailer`,
-    options: {
-      fromEmail: "vatsik@i.ua",
-      sendmail: true,
-      transport: {
-        host: "smtp.office365.com",
-        port: 587,
-        secureConnection: false,
-        auth: {
-          user: "vatsik@i.ua",
-          pass: "qwerty12345",
-        },
-        tls: {
-          ciphers: "SSLv3",
-        },
-        requireTLS: true,
-      },
-      templateMap: {
-        "order.placed": "orderplaced",
-      },
-    },
-  },
   {
     resolve: `medusa-fulfillment-novaposhta`,
     options: {

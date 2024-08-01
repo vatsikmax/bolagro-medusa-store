@@ -17,7 +17,7 @@ class EmailSenderService extends AbstractNotificationService {
   constructor(container, config) {
     super(container);
     this.transportConf = {
-      host: process.env.MAILBOX_H,
+      host: process.env.MAILBOX_HOST,
       port: 465,
       secure: true,
       auth: {
@@ -175,7 +175,6 @@ class EmailSenderService extends AbstractNotificationService {
         ...message,
         to: this.transportConf.auth.user,
       };
-      console.log(adminMessage);
       const sendMailToShopPromise = this.transporter.sendMail(adminMessage);
       await Promise.all([sendMailToClientPromise, sendMailToShopPromise]);
 
